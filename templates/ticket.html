@@ -1,0 +1,93 @@
+{% extends 'pagelayout.html' %}
+{% block content %}
+        {% for movie in data %}
+
+        <!-- Changes background depending on the movie being viewed -->
+            {% if movie.m_id==1 %}
+                <style> body {background-image: url('https://wallpaperboat.com/wp-content/uploads/2021/08/31/78310/star-wars-07.jpg'); background-repeat: no-repeat; background-attachment: fixed;}</style>
+            {% endif %}
+
+            {% if movie.m_id==2 %}
+                <style> body {background-image: url('https://wallsbazar.com/wp-content/uploads/2022/03/Spiderman-No-Way-Home-Wallpaper.jpg'); background-repeat: no-repeat; background-attachment: fixed;}</style>
+            {% endif %}
+
+            {% if movie.m_id==3 %}
+                <style> body {background-image: url('https://wallpaperaccess.com/full/1107716.jpg'); background-repeat: no-repeat; background-attachment: fixed;}</style>
+            {% endif %}
+
+            {% if movie.m_id==4 %}
+                <style> body {background-image: url('https://wallpaperaccess.com/full/1367404.jpg'); background-repeat: no-repeat; background-attachment: fixed;}</style>
+            {% endif %}
+
+            {% if movie.m_id==5 %}
+                <style> body {background-image: url('https://images5.alphacoders.com/338/338840.jpg'); background-repeat: no-repeat; background-attachment: fixed;}</style>
+            {% endif %}
+
+<div class="container">
+    <div style="background-color: white; padding: 20px; border-radius: 40px; margin-top: 100px; margin-bottom: 30px;">
+            <!-- Displays the detailed viewing information -->
+            <h1>{{ movie.title }}</h1><br>
+            <p><strong>Description:</strong> {{ movie.desc }}</p>
+            <p><strong>Ticket price:</strong> {{ movie.price }}kr</p>
+            <p><strong>Auditorium:</strong> {{ movie.a_id }}</p>
+            <p><strong>Time:</strong> {{ movie.time }}</p>
+            <p><strong>Seats left:</strong> {{ capacity }} out of {{ movie.cap }} seats available</p>
+        {% endfor %}
+   
+        <br><br>
+        <!-- Displays a table of all tickets purchased for the current viewing -->
+        <h3>Tickets purchased for this viewing</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Last Name</td>
+                    <td>First Name</td>
+                    <td>Email</td>
+                    <td>Phone</td>
+                    <td>Ticket amount</td>
+                </tr>
+            </thead>
+            <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.lname }}</td>
+                    <td>{{ ticket.fname }}</td>
+                    <td>{{ ticket.email }}</td>
+                    <td>{{ ticket.phone }}</td>
+                    <td>{{ ticket.amount }}</td>
+                </tr>
+            {% endfor %}
+            
+        </table>
+        <br><br>
+
+        <!-- form for ordering tickets -->
+        <h3>Buy tickets:</h3>
+
+        <!-- displays error message if entered values are not allowed -->
+        {% for message in get_flashed_messages() %}
+        <div class="alert alert-danger" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            <!-- Email field in form (checks if format is valid for an email) -->
+            {{ form.email.label(class="form-label") }}
+            {{ form.email(class="form-control") }}
+            <br>
+
+            <!-- Integer field for specifying amount of tickets -->
+            {{ form.tickets.label(class="form-label") }}
+            {{ form.tickets(class="form-control", value=1, min=1) }}
+            <br>
+
+            <!-- Submit field -->
+            {{ form.submit(class="btn btn-primary") }}
+        </form>
+        <br>
+    </div>
+</div>
+
+{% endblock %}

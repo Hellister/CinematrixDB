@@ -1,0 +1,77 @@
+{% extends 'pagelayout.html' %}
+{% block content %}
+<div class="container">
+    <br><h1>Welcome to Oslo Cinematrix </h1><br>
+    <h4 id="text">These are the next 5 viewings:</h4>
+    <!-- Displays a table of the 5 upcoming viewings -->
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Auditorium</td>
+                <td>Time</td>
+                <td>Price</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody id="top5">
+        {% for viewing in top5 %}
+            <tr>
+                <td>{{ viewing.title }}</td>
+                <td>{{ viewing.id }}</td>
+                <td>{{ viewing.time }}</td>
+                <td>{{ viewing.price }}kr</td>
+                <td>
+                    <!-- button for going to the detailed info for the viewing -->
+                    <form>
+                        <button class="btn btn-dark" formaction="{{ url_for('ticket', id=viewing.w_id) }}">More info</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tbody id="all_viewings" style="display: none;">
+        {% for viewing in entries %}
+            <tr>
+                <td>{{ viewing.title }}</td>
+                <td>{{ viewing.id }}</td>
+                <td>{{ viewing.time }}</td>
+                <td>{{ viewing.price }}kr</td>
+                <td>
+                    <!-- button for going to the detailed info for the viewing -->
+                    <form>
+                        <button class="btn btn-dark" formaction="{{ url_for('ticket', id=viewing.w_id) }}">More info</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button class="btn btn-dark" id="but" onclick="toggle()">show more</button>
+</div>
+
+
+<!-- script to toggle tables from showing 5 viewings to all viewings -->
+<script>
+    function toggle() {
+      var x = document.getElementById("top5");
+      var y = document.getElementById("all_viewings")
+      var text = document.getElementById("text")
+      var but = document.getElementById("but")
+
+      if (x.style.display === "none") {
+        x.style.display = "contents";
+        y.style.display = "none";
+        but.innerText="show more";
+        text.innerText="These are the next 5 viewings:";
+
+      } else {
+        x.style.display = "none";
+        y.style.display = "contents";
+        but.innerText="show less";
+        text.innerText="Showing all viewings:";
+      }
+    }
+</script>
+{% endblock %}
